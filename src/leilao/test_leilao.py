@@ -14,15 +14,14 @@ class TestLeilao(TestCase):
 
         self.leilao = Leilao('Celular')
 
-    def test_que_retorna_maior_e_menor_valor_quando_adicionados_de_forma_decrescente(self):
-        self.leilao.propoe(self.lance_do_michael)
-        self.leilao.propoe(self.lance_do_max)
+    def test_nao_deve_permitir_propor_um_lance_quando_valores_forem_adicionados_de_forma_decrescente(self):
 
-        menor_valor_esperado = 99.23
-        maior_valor_esperado = 140.00
+        with self.assertRaises(ValueError):
+            self.leilao.propoe(self.lance_do_michael)
+            self.leilao.propoe(self.lance_do_max)
 
-        self.assertEqual(menor_valor_esperado, self.leilao.menor_lance)
-        self.assertEqual(maior_valor_esperado, self.leilao.maior_lance)
+            # self.assertEqual(menor_valor_esperado, self.leilao.menor_lance)
+            # self.assertEqual(maior_valor_esperado, self.leilao.maior_lance)
 
     def test_que_retorna_maior_e_menor_valor_quando_adicionados_de_forma_crescente(self):
         self.leilao.propoe(self.lance_do_max)
@@ -85,3 +84,5 @@ class TestLeilao(TestCase):
 
             # quantidade_de_lances_recebidos = len(self.leilao.lances)
             # self.assertEquals(1, quantidade_de_lances_recebidos)
+
+

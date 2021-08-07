@@ -27,7 +27,7 @@ class Leilao:
         self.menor_lance = sys.float_info.max
 
     def propoe(self, lance: Lance):
-        if (not self.__lances or self.__lances[-1].usuario != lance.usuario):
+        if (not self.__lances or self.__lances[-1].usuario != lance.usuario and lance.valor > self.__lances[-1].valor):
             if (lance.valor > self.maior_lance):
                 self.maior_lance = lance.valor
             if (lance.valor < self.menor_lance):
@@ -35,7 +35,11 @@ class Leilao:
 
             self.__lances.append(lance)
             return True
-        else:
+
+        if(lance.valor <= self.__lances[-1].valor):
+            raise ValueError('O valor é inválido ! É preciso informar um valor maior que o do lance anterior !')
+
+        if(self.__lances[-1].usuario == lance.usuario):
             raise ValueError('O usuário já fez um lance ! Não é permitido executar dois lances seguidos !')
 
     @property
