@@ -1,5 +1,5 @@
 import sys
-
+from copy import deepcopy
 
 class Usuario:
 
@@ -27,28 +27,32 @@ class Leilao:
         self.menor_lance = sys.float_info.max
 
     def propoe(self, lance: Lance):
-        if (lance.valor > self.maior_lance):
-            self.maior_lance = lance.valor
-        if (lance.valor < self.menor_lance):
-            self.menor_lance = lance.valor
+        if (not self.__lances or self.__lances[-1].usuario != lance.usuario):
+            if (lance.valor > self.maior_lance):
+                self.maior_lance = lance.valor
+            if (lance.valor < self.menor_lance):
+                self.menor_lance = lance.valor
 
-        self.__lances.append(lance)
+            self.__lances.append(lance)
+            return True
+        else:
+            raise ValueError('O usuário já fez um lance ! Não é permitido executar dois lances seguidos !')
 
     @property
     def lances(self):
-        return self.__lances[:]
+        return deepcopy(self.__lances)
 
 
-class Avaliador:
-
-    def __init__(self):
-        self.maior_lance = sys.float_info.min
-        self.menor_lance = sys.float_info.max
-
-    def avalia(self, leilao: Leilao):
-
-        for lance in leilao.lances:
-            if(lance.valor > self.maior_lance):
-                self.maior_lance = lance.valor
-            if(lance.valor < self.menor_lance):
-                self.menor_lance = lance.valor
+# class Avaliador:
+#
+#     def __init__(self):
+#         self.maior_lance = sys.float_info.min
+#         self.menor_lance = sys.float_info.max
+#
+#     def avalia(self, leilao: Leilao):
+#
+#         for lance in leilao.lances:
+#             if(lance.valor > self.maior_lance):
+#                 self.maior_lance = lance.valor
+#             if(lance.valor < self.menor_lance):
+#                 self.menor_lance = lance.valor
