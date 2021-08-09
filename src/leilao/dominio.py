@@ -13,7 +13,7 @@ class Usuario:
             leilao.propoe(lance)
             self.__carteira -= valor
         else:
-            print('Proposta recusada.')
+            raise ValueError('O lance proposto tem um valor maior que o da carteira !')
 
     @property
     def carteira(self):
