@@ -1,6 +1,9 @@
 from src.leilao.dominio import Usuario, Leilao
 import pytest
 
+from src.leilao.excecoes import LanceInvalido
+
+
 @pytest.fixture
 def halgard():
     return Usuario('Halgard', 100.00)
@@ -37,7 +40,7 @@ def test_deve_permitir_propor_lance_quando_o_valor_e_igual_ao_valor_da_carteira(
     assert rodolfus.carteira == 0
 
 def test_nao_deve_permitir_propor_lance_quando_o_valor_for_maior_que_o_valor_da_carteir(maxilis, leilao):
-    with pytest.raises(ValueError):
+    with pytest.raises(LanceInvalido):
         maxilis.propoe_lance(leilao, 600)
 
         # assert maxilis.carteira == 500

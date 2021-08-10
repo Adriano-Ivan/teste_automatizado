@@ -1,5 +1,6 @@
 import sys
 from copy import deepcopy
+from src.leilao.excecoes import LanceInvalido
 
 class Usuario:
 
@@ -16,7 +17,7 @@ class Usuario:
             leilao.propoe(lance)
             self.__carteira -= valor
         else:
-            raise ValueError('O lance proposto tem um valor maior que o da carteira !')
+            raise LanceInvalido('O lance proposto tem um valor maior que o da carteira !')
 
     @property
     def carteira(self):
@@ -48,10 +49,14 @@ class Leilao:
         return self.__lances
 
     def __sao_usuarios_diferentes(self, lance):
-        return self.__lances[-1].usuario != lance.usuario
+        if self.__lances[-1].usuario != lance.usuario:
+            return True
+        raise LanceInvalido('O mesmo usuário não pode dar dois lances seguidos !')
 
     def __valor_e_maior_que_o_anterior(self, lance):
-        return lance.valor > self.__lances[-1].valor
+        if lance.valor > self.__lances[-1].valor:
+            return True
+        raise LanceInvalido('O valor do lance deve ser maior que o do lance anterior !')
 
     def __lance_e_valido(self, lance):
         return (not self.__tem_lances() or self.__sao_usuarios_diferentes(lance) and
@@ -65,7 +70,7 @@ class Leilao:
 
             self.__lances.append(lance)
         else:
-            raise ValueError('O usuário já fez um lance ! Não é permitido executar dois lances seguidos !')
+            raise LanceInvalido('O usuário já fez um lance ! Não é permitido executar dois lances seguidos !')
         # if(lance.valor <= self.__lances[-1].valor):
         #     raise ValueError('O valor é inválido ! É preciso informar um valor maior que o do lance anterior !')
 

@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from src.leilao.dominio import Leilao, Usuario, Lance
+from src.leilao.excecoes import LanceInvalido
 
 
 class TestLeilao(TestCase):
@@ -16,7 +17,7 @@ class TestLeilao(TestCase):
 
     def test_nao_deve_permitir_propor_um_lance_quando_valores_forem_adicionados_de_forma_decrescente(self):
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(LanceInvalido):
             self.leilao.propoe(self.lance_do_michael)
             self.leilao.propoe(self.lance_do_max)
 
@@ -78,7 +79,7 @@ class TestLeilao(TestCase):
     def teste_nao_deve_permitir_propor_lance_caso_o_usuario_seja_o_mesmo(self):
         lance_do_michael140 = Lance(self.michael, 140.0)
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(LanceInvalido):
             self.leilao.propoe(self.lance_do_michael)
             self.leilao.propoe(lance_do_michael140)
 
